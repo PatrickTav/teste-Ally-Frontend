@@ -1,10 +1,13 @@
-import {Header} from './components'
+import { Header, Form } from './components'
+import { CMain } from './styles/styled'
 
 function App() {
-
   return (
     <div>
-      <Header/>
+      <Header />
+      <CMain>
+        <Form />
+      </CMain>
     </div>
   )
 }
