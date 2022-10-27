@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CForm } from './styled'
 import { useFetch } from '../../hooks/useFetch'
 
@@ -6,8 +6,18 @@ const urlCounty = 'https://amazon-api.sellead.com/country'
 const urlCity = 'https://amazon-api.sellead.com/city'
 
 const Form = () => {
+  const [dataCity, setDataCity] = useState([])
   const { data: dataCountry } = useFetch(urlCounty)
-  const { data: dataCity } = useFetch(urlCity)
+  const { data: dataCities } = useFetch(urlCity)
+
+  const handleFilterCityByCountry = (e) => {
+    const codeCountry = e.target.value
+    const filterCityByCode = dataCities.filter(
+      ({ country_code }) => country_code === codeCountry
+    )
+
+    setDataCity(filterCityByCode)
+  }
 
   return (
     <>
@@ -39,7 +49,7 @@ const Form = () => {
           <label>
             País:
             <br />
-            <select name="selectACountry">
+            <select onInput={handleFilterCityByCountry} name="selectACountry">
               {dataCountry &&
                 dataCountry.map(({ code, name, name_ptbr }) => (
                   <option key={name} value={code}>
@@ -52,13 +62,24 @@ const Form = () => {
           <label>
             Cidade:
             <br />
-            <select name="selectACity" >
+            <select name="selectACity">
+              {!dataCity || dataCity.length === 0 ? (
+                <option value=''>Sem destino para esse País </option>
+              ) : (
+                dataCity.map(({ id, country_code, name_ptbr }) => (
+                  <option key={id} value={country_code}>
+                    {name_ptbr}
+                  </option>
+                ))
+              )}
+
+              {/* {!dataCity&& <option value='' >Sem destino!</option>}
               {dataCity &&
                 dataCity.map(({ id, country_code, name_ptbr }) => (
                   <option key={id} value={country_code}>
                     {name_ptbr}
                   </option>
-                ))}
+                ))} */}
             </select>
           </label>
         </div>
