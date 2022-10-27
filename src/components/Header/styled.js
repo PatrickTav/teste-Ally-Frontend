@@ -2,9 +2,9 @@ import styled from 'styled-components'
 
 export const CHeader = styled.header`
   background-color: #1565c0;
-  color: #d8d8d8;
+  color: #fff;
   padding: 20px;
-  margin:auto;
+  margin: auto;
   text-align: center;
   font-size: 1.2rem;
 `

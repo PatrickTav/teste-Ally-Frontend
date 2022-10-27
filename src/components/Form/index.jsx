@@ -1,42 +1,68 @@
 import React from 'react'
+import { CForm } from './styled'
+import { useFetch } from '../../hooks/useFetch'
+
+const urlCounty = 'https://amazon-api.sellead.com/country'
+const urlCity = 'https://amazon-api.sellead.com/city'
 
 const Form = () => {
+  const { data: dataCountry } = useFetch(urlCounty)
+  const { data: dataCity } = useFetch(urlCity)
+
   return (
     <>
-      <form action="">
-        <div>
+      <CForm action="">
+        <div className="personal_data">
           <label>
             Nome:
-            <input type="text" name="name" />
+            <br />
+            <input type="text" name="name" placeholder="ex:Ally Silva" />
           </label>
           <label>
-            email:
-            <input type="email" name="email" />
+            Email:
+            <br />
+            <input type="email" name="email" placeholder="ex:ally@gmail.com" />
           </label>
           <label>
             Telefone:
-            <input type="tel" name="phone" />
+            <br />
+            <input type="tel" name="phone" placeholder="ex:(99)99999-9999" />
           </label>
           <label>
-            cpf:
+            CPF:
+            <br />
             <input type="text" name="cpf" />
           </label>
         </div>
-        <div>
+
+        <div className="places-data">
           <label>
             País:
-            <select name="selectACountry" id="">
-                <option value="AP">alsdk</option>
+            <br />
+            <select name="selectACountry">
+              {dataCountry &&
+                dataCountry.map(({ code, name, name_ptbr }) => (
+                  <option key={name} value={code}>
+                    {name_ptbr}
+                  </option>
+                ))}
             </select>
           </label>
+
           <label>
             Cidade:
-            <select name="selectACity" id="">
-                <option value="AP">alsdk</option>
+            <br />
+            <select name="selectACity" >
+              {dataCity &&
+                dataCity.map(({ id, country_code, name_ptbr }) => (
+                  <option key={id} value={country_code}>
+                    {name_ptbr}
+                  </option>
+                ))}
             </select>
           </label>
         </div>
-      </form>
+      </CForm>
     </>
   )
 }
