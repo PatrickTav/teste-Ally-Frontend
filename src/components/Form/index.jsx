@@ -5,39 +5,20 @@ import { useFetch } from '../../hooks/useFetch'
 // HookForm e yup
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
+import schema from './validation'
 
 // endpoints para request
 const urlCounty = 'https://amazon-api.sellead.com/country'
 const urlCity = 'https://amazon-api.sellead.com/city'
 
-//Criando esquema para as validações
-const schema = yup
-  .object({
-    name: yup.string().required('Campo Obrigatório'),
-    email: yup
-      .string()
-      .email('Insira um email válido')
-      .required('Campo Obrigatório'),
-    phone: yup.string().required('insira um número válido'),
-    cpf: yup
-      .string()
-      .max(11, 'O maximo de um cpf são 11 números')
-      .min(11, 'O minimo de um cpf são 11 números')
-      .required('Insira um cpf válido'),
-  })
-  .required()
-
-
 function Form() {
   const [dataCity, setDataCity] = useState([])
-  
 
-  // Uso do custom hook
+  // Uso do custom hook useFetch
   const { data: dataCountry } = useFetch(urlCounty)
   const { data: dataCities } = useFetch(urlCity)
 
-  //Função para filtrar as cidades por País
+  //Função para filtrar as cidades por País no select cities
   const handleFilterCityByCountry = (e) => {
     const codeCountry = e.target.value
     const filterCityByCode = dataCities.filter(
@@ -51,12 +32,26 @@ function Form() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+   
   })
 
-  const onSubmit = (data) => console.log(data)
+  const onSubmit = (data) => {
+    console.log(data)
+    reset({
+      name: '',
+      email: '',
+      phone: '',
+      cpf: '',
+      countrys: '',
+      cities:''
+      
+    })
+    // Estrutura para caso tivesse um backend:
+  }
 
   return (
     <CContainer>
@@ -67,10 +62,10 @@ function Form() {
             <br />
             <CInput
               type="text"
-              name="name" 
-              defaultValue=""
+              // name="name"
+
               {...register('name')}
-              placeholder="ex:Ally Hub"
+              placeholder="ex: Ally Hub"
             />
             <CAlert>{errors.name?.message}</CAlert>
           </CLabel>
@@ -79,9 +74,8 @@ function Form() {
             <br />
             <CInput
               type="email"
-              name="email"
               {...register('email')}
-              placeholder="ex:ally@gmail.com"
+              placeholder="ex: ally@gmail.com"
             />
             <CAlert>{errors.email?.message}</CAlert>
           </CLabel>
@@ -89,17 +83,16 @@ function Form() {
             Telefone:
             <br />
             <CInput
-              type="tel"
-              name="phone"
+              type="number"
               {...register('phone')}
-              placeholder="ex:(99)99999-9999"
+              placeholder="ex: (99)99999-9999"
             />
             <CAlert>{errors.phone?.message}</CAlert>
           </CLabel>
           <CLabel>
             CPF:
             <br />
-            <CInput type="number" name="cpf" {...register('cpf')} />
+            <CInput type="number" {...register('cpf')} />
             <CAlert>{errors.cpf?.message}</CAlert>
           </CLabel>
         </div>
@@ -119,7 +112,9 @@ function Form() {
                     {name_ptbr}
                   </option>
                 ))}
+          
             </select>
+          <CAlert>{errors.countrys?.message}</CAlert>
           </CLabel>
 
           <CLabel>
@@ -136,6 +131,7 @@ function Form() {
                 ))
               )}
             </select>
+              <CAlert>{errors.cities?.message}</CAlert>
           </CLabel>
         </div>
         <CButton>Enviar</CButton>
