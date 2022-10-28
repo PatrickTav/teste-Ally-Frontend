@@ -1,10 +1,10 @@
 import React from 'react'
-import { CHeader } from './styled'
+import { CHeader, CTitle } from './styled'
 
 const Header = () => {
   return (
     <CHeader>
-      <h1>Defina seu Destino</h1>
+      <CTitle>Defina seu Destino</CTitle>
     </CHeader>
   )
 }
