@@ -1,5 +1,13 @@
 import React, { useState } from 'react'
-import { CForm, CAlert, CLabel, CInput, CContainer, CButton } from './styled'
+import {
+  CForm,
+  CAlert,
+  CLabel,
+  CInput,
+  CContainer,
+  CButton,
+  CSelect
+} from './styled'
 import { useFetch } from '../../hooks/useFetch'
 
 // HookForm e yup
@@ -36,21 +44,19 @@ function Form() {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-   
   })
 
   const onSubmit = (data) => {
     console.log(data)
+    // Estrutura para caso tivesse um backend:
     reset({
       name: '',
       email: '',
       phone: '',
       cpf: '',
       countrys: '',
-      cities:''
-      
+      cities: '',
     })
-    // Estrutura para caso tivesse um backend:
   }
 
   return (
@@ -62,8 +68,6 @@ function Form() {
             <br />
             <CInput
               type="text"
-              // name="name"
-
               {...register('name')}
               placeholder="ex: Ally Hub"
             />
@@ -101,7 +105,7 @@ function Form() {
           <CLabel>
             País:
             <br />
-            <select
+            <CSelect
               onInput={handleFilterCityByCountry}
               name="selectACountry"
               {...register('countrys')}
@@ -112,15 +116,14 @@ function Form() {
                     {name_ptbr}
                   </option>
                 ))}
-          
-            </select>
-          <CAlert>{errors.countrys?.message}</CAlert>
+            </CSelect>
+            <CAlert>{errors.countrys?.message}</CAlert>
           </CLabel>
 
           <CLabel>
             Cidade:
             <br />
-            <select name="selectACity" {...register('cities')}>
+            <CSelect name="selectACity" {...register('cities')}>
               {!dataCity || dataCity.length === 0 ? (
                 <option value="">Sem destino para esse País </option>
               ) : (
@@ -130,8 +133,8 @@ function Form() {
                   </option>
                 ))
               )}
-            </select>
-              <CAlert>{errors.cities?.message}</CAlert>
+            </CSelect>
+            <CAlert>{errors.cities?.message}</CAlert>
           </CLabel>
         </div>
         <CButton>Enviar</CButton>

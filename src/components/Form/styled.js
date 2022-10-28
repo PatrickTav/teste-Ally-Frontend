@@ -9,9 +9,7 @@ export const CForm = styled.form`
   grid-template-areas:
     'personal place'
     'button button';
-  color: #FFF;
-
-
+  color: #fff;
 
   .personal_data,
   .places_data {
@@ -21,7 +19,6 @@ export const CForm = styled.form`
     gap: 20px;
     /* border: 1px solid #ddd; */
     padding: 20px;
-   
   }
   .personal_data {
     grid-area: personal;
@@ -41,15 +38,15 @@ export const CForm = styled.form`
       rgba(8, 177, 151, 1) 41%,
       rgba(0, 174, 116, 1) 100%
     );
-    border-radius:  0 10px 10px 0;
+    border-radius: 0 10px 10px 0;
   }
-
-  .places_data select {
-    padding: 5px 10px;
-    width: 100%;
-    border-radius: 5px;
-    border: none;
-  }
+`
+export const CSelect = styled.select`
+  width: 100%;
+  margin-top: 0.5rem;
+  border-radius: 0.4rem;
+  border: none;
+  padding: 0.3rem 0.5rem;
 `
 
 export const CContainer = styled.section`
@@ -72,6 +69,7 @@ export const CInput = styled.input`
   border: none;
   padding: 0.3rem 0.5rem;
 `
+
 export const CButton = styled.button`
   padding: 0.2rem 0.4rem;
   background-color: rgb(8, 177, 151);
@@ -80,16 +78,19 @@ export const CButton = styled.button`
   margin: auto;
   margin-top: 2rem;
   cursor: pointer;
-  padding: .5rem 3rem;
+  padding: 0.5rem 3rem;
   text-align: center;
-  border:none;
-  color: #FFF;
+  border: none;
+  color: #fff;
   font-size: 1.3rem;
   font-weight: 700;
   border-radius: 5px;
-  
-  
-  :hover{
-    background: linear-gradient(90deg, rgba(26,177,8,1) 41%, rgba(0,174,116,1) 100%);
+
+  :hover {
+    background: linear-gradient(
+      90deg,
+      rgba(26, 177, 8, 1) 41%,
+      rgba(0, 174, 116, 1) 100%
+    );
   }
 `
