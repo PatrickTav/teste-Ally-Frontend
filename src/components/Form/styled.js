@@ -13,6 +13,8 @@ export const CForm = styled.form`
 
  .select{
   color: #000;
+  font-size:.8rem;
+  margin-top: 0.4rem;
  }
   .personal_data,
   .places_data {
@@ -44,6 +46,21 @@ export const CForm = styled.form`
     );
     border-radius: 0 10px 10px 0;
   }
+
+  @media(max-width:1042px) {
+    grid-template-areas:
+    'personal personal'
+    'place place'
+    'button button';
+
+    .personal_data{
+      border-radius: 10px 10px 0 0 ;
+    }
+    .places_data{
+      border-radius:  0 0 10px 10px;
+
+    }
+  }
 `
 export const CSelect = styled.select`
   width: 100%;
@@ -69,9 +86,9 @@ export const CLabel = styled.label`
 export const CInput = styled.input`
   width: 100%;
   margin-top: 0.5rem;
-  border-radius: 0.4rem;
+  border-radius: 0.2rem;
   border: none;
-  padding: 0.3rem 0.5rem;
+  padding: 0.5rem 0.5rem;
 `
 
 export const CButton = styled.button`

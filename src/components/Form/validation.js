@@ -15,8 +15,14 @@ const schema = yup
       .max(11, 'O maximo de um cpf são 11 números')
       .min(11, 'O minimo de um cpf são 11 números')
       .required('Insira um cpf válido'),
-      // countrys:yup.array().required('Escolha um destino'),
-      // cities:yup.array().required('Escolha um destino')
+    // countrys: yup.object().shape({
+    //     label: yup.string(),
+    //     value: yup.string()
+    //   }),
+    // cities: yup.object().shape({
+    //     label: yup.string(),
+    //     value: yup.string()
+    //   }),      
   })
   .required()
 

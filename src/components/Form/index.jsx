@@ -1,26 +1,17 @@
 import React, { useState } from 'react'
-import {
-  CForm,
-  CAlert,
-  CLabel,
-  CInput,
-  CContainer,
-  CButton,
-  CSelect,
-} from './styled'
+import { CForm, CAlert, CLabel, CInput, CContainer, CButton, CSelect} from './styled'
 
 import Select from 'react-select'
-
+// custom hook para request
 import { useFetch } from '../../hooks/useFetch'
-
 // HookForm e yup
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import schema from './validation'
 
 // endpoints para request
-const urlCounty = 'https://amazon-api.sellead.com/country'
-const urlCity = 'https://amazon-api.sellead.com/city'
+const urlCounty = import.meta.env.VITE_COUNTRY
+const urlCity = import.meta.env.VITE_CITY
 
 function Form() {
   const [dataCity, setDataCity] = useState([])
@@ -41,9 +32,13 @@ function Form() {
     resolver: yupResolver(schema),
   })
 
-  const onSubmit = (data) => {
-    console.log(data.selectACity)
+  const onSubmit = (personalData) => {
+    // recebe os dados do usuário e tambem os destinos inseridos no select
+    console.log(personalData, { selectedCities, selectedCountry })
     // Estrutura para caso tivesse um backend:
+    // -------------------------------------------------
+
+    // limpar os campos do form
     reset({
       name: '',
       email: '',
@@ -54,40 +49,37 @@ function Form() {
     })
   }
 
+  // options que será exibido o usuário usando o react select
   const optionsCountrys =
     dataCountry &&
     dataCountry.map((country) => ({
       value: country.code,
       label: country.name,
     }))
+
   const optionsCities =
-  dataCity &&
-  dataCity.map((country) => ({
+    dataCity &&
+    dataCity.map((country) => ({
       value: country.country_code,
       label: country.name,
     }))
 
   //Função para filtrar as cidades por País no select cities
   const handleFilterCityByCountry = (e) => {
-    
     setSelectedCountry(e)
-    
-    const filterCityByCode = dataCities.filter(
-      ({ country_code }) => {
-        if (e.length===0) {
-          
+
+    const filterCityByCode =
+      dataCities &&
+      dataCities.filter(({ country_code }) => {
+        if (e.length === 0) {
           return dataCity
         }
         return country_code === e[e.length - 1].value
-      }
-      )
-      
-      setDataCity(filterCityByCode)
+      })
 
-    
+    setDataCity(filterCityByCode)
   }
-  
- 
+
   return (
     <CContainer>
       <CForm action="" onSubmit={handleSubmit(onSubmit)}>
@@ -135,50 +127,25 @@ function Form() {
             País:
             <br />
             <Select
-              className='select'
+              {...register('countrys')}
+              className="select"
               options={optionsCountrys}
               isMulti
               onChange={handleFilterCityByCountry}
-              {...register('countrys')}
             />
-            {/* <CSelect
-              onInput={handleFilterCityByCountry}
-              name="selectACountry"
-              {...register('countrys')}
-            >
-              {dataCountry &&
-                dataCountry.map(({ code, name, name_ptbr }) => (
-                  <option key={name} value={code}>
-                    {name_ptbr}
-                  </option>
-                ))}
-            </CSelect> */}
             <CAlert>{errors.countrys?.message}</CAlert>
           </CLabel>
 
           <CLabel>
             Cidade:
             <br />
-
-
             <Select
-              className='select'
+              {...register('cities')}
+              className="select"
               options={optionsCities}
               isMulti
               onChange={(e) => setSelectedCities(e)}
-              {...register('cities')}
             />
-            {/* <CSelect name="selectACity" {...register('cities')}>
-              {!dataCity || dataCity.length === 0 ? (
-                <option value="">Sem destino para esse País </option>
-              ) : (
-                dataCity.map(({ id, country_code, name }) => (
-                  <option key={id} value={country_code}>
-                    {name}
-                  </option>
-                ))
-              )}
-            </CSelect> */}
             <CAlert>{errors.cities?.message}</CAlert>
           </CLabel>
         </div>
