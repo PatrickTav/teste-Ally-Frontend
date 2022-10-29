@@ -6,8 +6,11 @@ import {
   CInput,
   CContainer,
   CButton,
-  CSelect
+  CSelect,
 } from './styled'
+
+import Select from 'react-select'
+
 import { useFetch } from '../../hooks/useFetch'
 
 // HookForm e yup
@@ -21,20 +24,12 @@ const urlCity = 'https://amazon-api.sellead.com/city'
 
 function Form() {
   const [dataCity, setDataCity] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState([])
+  const [selectedCities, setSelectedCities] = useState([])
 
   // Uso do custom hook useFetch
   const { data: dataCountry } = useFetch(urlCounty)
   const { data: dataCities } = useFetch(urlCity)
-
-  //Função para filtrar as cidades por País no select cities
-  const handleFilterCityByCountry = (e) => {
-    const codeCountry = e.target.value
-    const filterCityByCode = dataCities.filter(
-      ({ country_code }) => country_code === codeCountry
-    )
-
-    setDataCity(filterCityByCode)
-  }
 
   // uso do hookForm
   const {
@@ -47,7 +42,7 @@ function Form() {
   })
 
   const onSubmit = (data) => {
-    console.log(data)
+    console.log(data.selectACity)
     // Estrutura para caso tivesse um backend:
     reset({
       name: '',
@@ -59,6 +54,40 @@ function Form() {
     })
   }
 
+  const optionsCountrys =
+    dataCountry &&
+    dataCountry.map((country) => ({
+      value: country.code,
+      label: country.name,
+    }))
+  const optionsCities =
+  dataCity &&
+  dataCity.map((country) => ({
+      value: country.country_code,
+      label: country.name,
+    }))
+
+  //Função para filtrar as cidades por País no select cities
+  const handleFilterCityByCountry = (e) => {
+    
+    setSelectedCountry(e)
+    
+    const filterCityByCode = dataCities.filter(
+      ({ country_code }) => {
+        if (e.length===0) {
+          
+          return dataCity
+        }
+        return country_code === e[e.length - 1].value
+      }
+      )
+      
+      setDataCity(filterCityByCode)
+
+    
+  }
+  
+ 
   return (
     <CContainer>
       <CForm action="" onSubmit={handleSubmit(onSubmit)}>
@@ -105,7 +134,14 @@ function Form() {
           <CLabel>
             País:
             <br />
-            <CSelect
+            <Select
+              className='select'
+              options={optionsCountrys}
+              isMulti
+              onChange={handleFilterCityByCountry}
+              {...register('countrys')}
+            />
+            {/* <CSelect
               onInput={handleFilterCityByCountry}
               name="selectACountry"
               {...register('countrys')}
@@ -116,14 +152,23 @@ function Form() {
                     {name_ptbr}
                   </option>
                 ))}
-            </CSelect>
+            </CSelect> */}
             <CAlert>{errors.countrys?.message}</CAlert>
           </CLabel>
 
           <CLabel>
             Cidade:
             <br />
-            <CSelect name="selectACity" {...register('cities')}>
+
+
+            <Select
+              className='select'
+              options={optionsCities}
+              isMulti
+              onChange={(e) => setSelectedCities(e)}
+              {...register('cities')}
+            />
+            {/* <CSelect name="selectACity" {...register('cities')}>
               {!dataCity || dataCity.length === 0 ? (
                 <option value="">Sem destino para esse País </option>
               ) : (
@@ -133,7 +178,7 @@ function Form() {
                   </option>
                 ))
               )}
-            </CSelect>
+            </CSelect> */}
             <CAlert>{errors.cities?.message}</CAlert>
           </CLabel>
         </div>

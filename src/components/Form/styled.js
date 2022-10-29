@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const CForm = styled.form`
   display: grid;
   /* gap: 20px; */
-  padding: 50px 21px;
+  padding: 20px 21px;
   font-weight: 400;
   font-size: 1.1rem;
   grid-template-areas:
@@ -11,6 +11,9 @@ export const CForm = styled.form`
     'button button';
   color: #fff;
 
+ .select{
+  color: #000;
+ }
   .personal_data,
   .places_data {
     display: flex;
@@ -29,6 +32,7 @@ export const CForm = styled.form`
       rgba(8, 177, 151, 1) 41%
     );
     border-radius: 10px 0 0 10px;
+    padding-bottom:2.5rem ;
   }
   .places_data {
     grid-area: place;
