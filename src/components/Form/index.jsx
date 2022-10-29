@@ -33,7 +33,7 @@ function Form() {
   })
 
   const onSubmit = (personalData) => {
-    // recebe os dados do usuário e tambem os destinos inseridos no select
+    // recebe os dados do usuário e tambem os destinos inseridos nos selects
     console.log(personalData, { selectedCities, selectedCountry })
     // Estrutura para caso tivesse um backend:
     // -------------------------------------------------
